@@ -635,7 +635,7 @@
 
     // ── URL вашего задеплоенного Google Apps Script ──────────
     // После публикации скрипта вставьте сюда полученный Web App URL
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyAg3ojC8cDnlDqb5cXNgIk6CpkuRYsYNb4p2KHE5Yx8kVwTKC_VbpBmSAv_dUiLsEh/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwzZTUnJNXfmjQDx4jKYxsd3Kq2oq9UM2-SmBJSanc7udB0bb5clNe1FG8YEp_90z4V/exec';
 
     function submitOrder() {
         if (state.cart.length === 0) {
