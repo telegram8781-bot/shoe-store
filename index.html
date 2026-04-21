@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Оптовый магазин обуви</title>
+
+    <script defer src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+    <div class="header-top">
+        <div>
+            <h1>👟 Оптовый магазин обуви</h1>
+            <div class="header-sub">Только для оптовых покупателей</div>
+        </div>
+        <div class="header-hours">8:00 – 22:00</div>
+    </div>
+    <div class="trust-strip">
+        <div class="trust-badge"><span aria-hidden="true">✅</span> Работаем с 2015 г.</div>
+        <div class="trust-badge"><span aria-hidden="true">📦</span> Быстрая отгрузка</div>
+        <div class="trust-badge"><span aria-hidden="true">🔒</span> Безопасная оплата</div>
+        <div class="trust-badge"><span aria-hidden="true">⭐</span> 500+ клиентов</div>
+    </div>
+</div>
+
+<div class="container">
+
+    <div id="categories-section">
+        <div class="section-title">Выберите категорию</div>
+        <div class="info-box">
+            <div class="info-box-icon" aria-hidden="true">ℹ️</div>
+            <div class="info-box-text">
+                <strong>Минимальный заказ — 1 упаковка.</strong>
+                Цены указаны за пару. Итоговая сумма рассчитывается автоматически.
+            </div>
+        </div>
+        <div class="categories" id="categories-grid"></div>
+
+        <div id="history-link-wrap" style="display:none">
+            <button type="button" class="history-link" id="history-link-btn" aria-label="Открыть историю заказов">
+                <span class="history-link-left">
+                    <span class="history-link-icon" aria-hidden="true">📋</span>
+                    История заказов
+                    <span class="history-link-badge" id="history-link-count">0</span>
+                </span>
+                <span class="history-link-arrow">›</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="products-section" id="products-section">
+        <button type="button" class="back-btn" id="products-back-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            Назад к категориям
+        </button>
+        <div class="sticky-cat-label">
+            <div class="cat-label-inner">
+                <div class="cat-label-name" id="cat-label"></div>
+                <div class="items-count" id="items-count"></div>
+            </div>
+        </div>
+        <div class="search-wrap">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input class="search-input" id="search-input" type="text" placeholder="Поиск по артикулу или названию…" autocomplete="off" aria-label="Поиск по товарам">
+            <button type="button" class="search-clear" id="search-clear" aria-label="Очистить поиск">×</button>
+        </div>
+        <div id="products-list"></div>
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <div class="order-section" id="order-section">
+        <button type="button" class="back-btn" id="order-back-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            Назад к корзине
+        </button>
+        <div class="section-title">Оформление заказа</div>
+        <div class="checkout-notice">
+            <span aria-hidden="true">⚠️</span>
+            <span>После отправки заказа наш менеджер свяжется с вами для подтверждения и уточнения деталей доставки.</span>
+        </div>
+        <div id="web-fallback-notice" class="info-box" style="display:none;margin-bottom:16px">
+            <div class="info-box-icon" aria-hidden="true">💡</div>
+            <div class="info-box-text">
+                <strong>Вы не в Telegram.</strong> После оформления скопируйте чек и отправьте его менеджеру вручную.
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="phone">Ваш телефон *</label>
+            <input type="tel" inputmode="tel" class="form-input" id="phone" placeholder="+7 (900) 000-00-00" maxlength="18" autocomplete="tel">
+            <div class="form-error" id="phone-error" role="alert">Введите корректный номер телефона</div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="comment">Комментарий к заказу</label>
+            <input type="text" class="form-input" id="comment" placeholder="Пожелания, сроки, способ доставки…" maxlength="200">
+        </div>
+        <div class="order-summary-box" id="order-summary"></div>
+        <button type="button" class="submit-btn" id="submit-order-btn">
+            <span>✓</span> Отправить заказ
+        </button>
+    </div>
+
+    <div class="receipt-section" id="receipt-section">
+        <div class="receipt-icon" aria-hidden="true">🎉</div>
+        <div class="receipt-title">Заказ принят!</div>
+        <div class="receipt-sub">Мы свяжемся с вами в течение 30 минут<br>для подтверждения заказа.</div>
+        <div class="receipt-order-num" id="receipt-order-num"></div>
+        <div class="receipt-box" id="receipt-content"></div>
+
+        <button type="button" class="copy-receipt-btn" id="copy-receipt-btn">
+            <span aria-hidden="true">📋</span> Скопировать чек
+        </button>
+        <div class="copy-hint">Скопируйте чек и отправьте менеджеру<br>когда он с вами свяжется</div>
+
+        <button type="button" class="new-order-btn" id="new-order-btn">Сделать новый заказ</button>
+    </div>
+
+    <div class="history-section" id="history-section">
+        <button type="button" class="back-btn" id="history-back-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            Назад к категориям
+        </button>
+        <div class="section-title">История заказов</div>
+        <div id="history-list"></div>
+    </div>
+
+</div><div class="cart-bar" id="cart-bar" role="status" aria-live="polite">
+    <div class="cart-bar-row">
+        <span class="cart-bar-count" id="cart-count"></span>
+        <span class="cart-bar-total" id="cart-total"></span>
+    </div>
+    <button type="button" class="cart-btn" id="checkout-btn" aria-label="Открыть корзину">
+        <span class="cart-btn-label"><span aria-hidden="true">🛒</span> Корзина</span>
+        <span class="cart-btn-badge" id="cart-badge">0</span>
+    </button>
+</div>
+
+<div class="modal" id="cart-modal" role="dialog" aria-modal="true" aria-label="Корзина">
+    <div class="modal-sheet">
+        <div class="modal-handle"></div>
+        <div class="modal-header">
+            <span class="modal-title">Ваша корзина</span>
+            <button type="button" class="modal-close" id="close-cart-btn" aria-label="Закрыть">×</button>
+        </div>
+        <div class="modal-body">
+            <div id="cart-items"></div>
+            <button type="button" class="cart-btn" id="modal-checkout-btn" style="margin-top:14px">
+                <span class="cart-btn-label"><span aria-hidden="true">✍️</span> Оформить заказ</span>
+                <span class="cart-btn-badge" id="modal-cart-total">0 ₽</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script defer src="data.js"></script>
+<script defer src="app.js"></script>
+
+</body>
+</html>
